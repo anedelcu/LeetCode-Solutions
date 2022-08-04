@@ -9,68 +9,51 @@
  * }
  */
 class Solution {
-        public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-
-        ListNode l1rv = reverse(l1);
-        ListNode l2rv = reverse(l2);
-        int remainder = 0;
-        Stack<Integer> s1 = new Stack<>();
-        while (l1rv != null && l2rv != null) {
-            if(l1rv.val + l2rv.val + remainder > 9) {
-                s1.add(l1rv.val + l2rv.val + remainder - 10);
-                remainder = 1;
-            }
-            else {
-                s1.add(l1rv.val + l2rv.val + remainder);
-                remainder = 0;
-            }
-            l1rv = l1rv.next;
-            l2rv = l2rv.next;
-
-        }
-
-        while (l1rv != null) {
-            if(l1rv.val + remainder > 9) {
-                s1.add(l1rv.val + remainder - 10);
-                remainder = 1;
-            }else {
-                s1.add(l1rv.val + remainder);
-                remainder = 0;
-            }
-            l1rv = l1rv.next;
-        }
-
-        while (l2rv != null) {
-            if(l2rv.val + remainder > 9) {
-                s1.add(l2rv.val + remainder - 10);
-                remainder = 1;
-            }else {
-                s1.add(l2rv.val + remainder);
-                remainder = 0;
-            }
-            l2rv = l2rv.next;
-        }
-if (remainder == 1) {
-            s1.add(1);
-        }
-        System.out.println(s1);
-        ListNode res = null;
-        while (!s1.isEmpty()) {
-            res = new ListNode(s1.pop(), res);
-            //res = res.next;
-        }
-        
-        //printListNode(reverse(res));
-        return reverse(res);
-    }
     
-    public static ListNode reverse(ListNode l){
+    ListNode reverse(ListNode s){
         ListNode ans = null;
-
-        while(l != null){
-            ans = new ListNode(l.val, ans);
-            l = l.next;
+        
+        while(s != null){
+            ans = new ListNode(s.val, ans);
+            s = s.next;
         }
         return ans;
+    }
+    
+    ListNode add(ListNode s, ListNode t){
+        
+        int sum = 0, carry = 0;
+        
+        ListNode temp = new ListNode(0);
+        ListNode ans = temp;
+        
+        while(s != null || t != null || carry != 0){
+            
+            sum = 0;
+            
+            if(s != null){
+                sum += s.val; s = s.next;
+            }
+            if(t != null){
+                sum += t.val; t = t.next;
+            }
+            
+            sum += carry;
+            carry = sum / 10;
+            
+            ListNode x = new ListNode(sum%10);
+            temp.next = x;
+            temp = temp.next;
+        }
+        return ans.next;
+    }
+     
+    public ListNode addTwoNumbers(ListNode s, ListNode t) {
+        ListNode one = reverse(s);
+        ListNode two = reverse(t);
+        
+        ListNode ans = add(one, two);
+        
+        return reverse(ans);
     }
 }
