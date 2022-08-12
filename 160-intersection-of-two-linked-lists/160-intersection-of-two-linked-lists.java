@@ -29,6 +29,6 @@ public class Solution {
             }
             
         }
-       return list1;
+       return list2;
     }
 }
