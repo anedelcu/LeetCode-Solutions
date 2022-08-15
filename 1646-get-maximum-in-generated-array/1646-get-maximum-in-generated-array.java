@@ -24,9 +24,6 @@ class Solution {
             
             
         }
-        for(int num : nums) {
-            System.out.print(num + " ");
-        }
         return max;
     }
 }
