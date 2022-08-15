@@ -13,15 +13,15 @@ class Solution {
                 
                 while(low < high) {
                     if(nums[low] + nums[high] == sum) {
-                        resList.add(Arrays.asList(nums[i], nums[low], nums[high]));
+                        //resList.add(Arrays.asList(nums[i], nums[low], nums[high]));
                         
-                        /*
+                        
                         List<Integer> res = new ArrayList<>();
                         res.add(nums[i]);
                         res.add(nums[low]);
                         res.add(nums[high]);
                         resList.add(res);
-                        */
+                        
                         while(low < high && nums[low] == nums[low + 1]) {
                             low++;
                         }
