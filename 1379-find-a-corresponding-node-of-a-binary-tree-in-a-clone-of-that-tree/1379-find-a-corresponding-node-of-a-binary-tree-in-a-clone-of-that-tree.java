@@ -9,21 +9,31 @@
  */
 
 class Solution {
-    TreeNode res , target;
-    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
-        this.target = target;
-        inOrder(original, cloned);
-        return res;
-    }
     
-    public void inOrder(TreeNode t1, TreeNode t2) {
-        if(t1 == null) {
-            return;
+    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        
+        Stack<TreeNode> stackO = new Stack<>();
+        Stack<TreeNode> stackC = new Stack<>();
+        
+        stackO.add(original);
+        stackC.add(cloned);
+        while(!stackO.isEmpty()) {
+            TreeNode nodeO = stackO.pop();
+            TreeNode nodeC = stackC.pop();
+            
+            if(nodeO == target) {
+                return nodeC;
+            }
+            
+            if(nodeO.left != null) {
+                stackO.add(nodeO.left);
+                stackC.add(nodeC.left);
+            }
+            if(nodeO.right != null) {
+                stackO.add(nodeO.right);
+                stackC.add(nodeC.right);
+            }
         }
-        inOrder(t1.left, t2.left);
-        if(t1 == target) {
-            res = t2;
-        }
-        inOrder(t1.right, t2.right);
+        return null;
     }
 }
