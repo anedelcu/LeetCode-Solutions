@@ -1,33 +1,34 @@
 class Solution {
     public String reverseVowels(String s) {
-        char[] arr = s.toCharArray();
-        String vowels = "";
-            
-        for( char ch : arr) {
-            if(isVowel(ch)) {
-                vowels += ch;
+        char[] arr = s.toCharArray(); 
+        int left = 0;
+        int right = arr.length - 1;
+
+        while(left < right) {
+            while(left < arr.length && !isVowel(arr[left])) {
+                left++;
             }
-        }
-        if(vowels.length() ==0) {
-            return s;
-        }
-        int j = vowels.length() - 1;
-        String res = "";
-        for( char ch : arr) {
-            if(isVowel(ch)) {
-                ch = vowels.charAt(j);
-                j--;
+            while(right >= 0 && !isVowel(arr[right])) {
+                right--;
             }
-            res += ch;
-        }
-        return res;
         
+            if(left < right){
+                swap(arr,left, right);
+                left++;
+                right--;
+            }
+        }        
+        
+        return new String(arr);
     }
-    private boolean isVowel(char ch) {
-        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
-          ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') {
-            return true;
-        }
-        return false;
+    private void swap (char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    
+    private boolean isVowel(char c) {
+        String VOWELS = "aeiouAEIOU";
+        return VOWELS.indexOf(c) != -1;
     }
 }
