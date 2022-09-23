@@ -3,12 +3,11 @@ class Solution {
         HashMap<String,Integer> dnaFreq = new HashMap();
         if(s.length()<=10)
             return new ArrayList<String>();
-        StringBuilder sb = new StringBuilder();
-        for(int i=0;i<10;i++)
-            sb.append(s.charAt(i));
+        StringBuilder sb = new StringBuilder(s.substring(0,10));
+        
         dnaFreq.put(sb.toString(), 1);
         List<String> res = new ArrayList<String>();
-        for(int i = 10 ; i< s.length() ; i++)
+        for(int i = 10 ; i < s.length() ; i++)
         {
             sb.deleteCharAt(0);
             sb.append(s.charAt(i));
