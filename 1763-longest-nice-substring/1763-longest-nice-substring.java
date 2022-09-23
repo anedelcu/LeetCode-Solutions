@@ -1,33 +1,142 @@
 class Solution {
     public String longestNiceSubstring(String s) {
-        String result = "";
-        // take first index, go from 0 to length-1 of the string
-		for (int i = 0;i<s.length(); i++){        
-            // take second index, this should go up to the length of the string <=
-			for (int j = i+1;j<=s.length(); j++){
-                //get the substring for the index range from i to j
-				String temp = s.substring(i, j);
-                // if length of the substring should be greater than 1
-				// if the length should be greater that the previous computed result
-				// if the substring is valid Nice String
-				// then update the result with the current substring from range i and j
-				if (temp.length() > 1 && result.length() < temp.length() && isNice(temp)) 
-                    result = temp;
-            }    
-        }
-        return result;
-    }
-    
-    public boolean isNice(String s) {
-        Set<Character> set = new HashSet<>();
-        for(char ch : s.toCharArray()) {
-            set.add(ch);
-        }
-        for (char ch : set) {
-            if (set.contains(Character.toUpperCase(ch)) != set.contains(Character.toLowerCase(ch))) {
-                return false;  
+
+    int start = 0;
+    int lengthAns = 0;
+
+    for (int unique = 1; unique <= 26; unique++) {
+        Map<Character, Integer> windowUp = new HashMap<>();
+        Map<Character, Integer> windowLow = new HashMap<>();
+        //Aa
+        
+        //this is the counter that stores how many valid pairs we have
+        int complete = 0;
+        int varity = 0;
+        int left = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char curr = s.charAt(i);
+            if (Character.isUpperCase(curr) == true) {
+                char lowercurr = Character.toLowerCase(curr);
+                //if both exists in window and curris 1 and loweercase is 1 or larger
+                windowUp.put(curr, windowUp.getOrDefault(curr, 0) + 1);
+                if (windowUp.getOrDefault(curr, 0) == 1 && windowLow.getOrDefault(lowercurr, 0) > 0) {
+                    complete++;
+                }
+                //if one exists and one dont, then varity ++
+                else if (windowUp.getOrDefault(curr, 0) == 1 && windowLow.getOrDefault(lowercurr, 0) == 0) {
+                    varity++;
+                }
+
+
+                //out
+                while (varity > unique) {
+                    char remove = s.charAt(left);
+                    if (Character.isUpperCase(remove) == true) {
+                        char lowRemove = Character.toLowerCase(remove);
+                        if (windowUp.getOrDefault(remove, 0) == 1 && windowLow.getOrDefault(lowRemove, 0) > 0) {
+                            complete--;
+
+                        } else if (windowUp.getOrDefault(remove, 0) == 1 && windowLow.getOrDefault(lowRemove, 0) == 0) {
+                            varity--;
+                        }
+                        windowUp.put(remove, windowUp.getOrDefault(remove, 0) - 1);
+                        if (windowUp.getOrDefault(remove, 0) == 0) {
+                            windowUp.remove(remove);
+                        }
+
+
+                    } else {
+                        char upperRemove = Character.toUpperCase(remove);
+                        if (windowLow.getOrDefault(remove, 0) == 1 && windowUp.getOrDefault(upperRemove, 0) > 0) {
+                            complete--;
+
+                        } else if (windowLow.getOrDefault(remove, 0) == 1 && windowUp.getOrDefault(upperRemove, 0) == 0) {
+                            varity--;
+                        }
+                        windowLow.put(remove, windowLow.getOrDefault(remove, 0) - 1);
+                        if (windowLow.getOrDefault(remove, 0) == 0) {
+                            windowLow.remove(remove);
+                        }
+                    }
+                    left++;
+                }
+                //calculate
+                if ((i - left + 1) > lengthAns && complete == varity) {
+                    lengthAns = i - left + 1;
+                    start = left;
+                }
+
+
+            } else {
+                char uppercurr = Character.toUpperCase(curr);
+
+                //if both exists in window and curris 1 and loweercase is 1 or larger
+                windowLow.put(curr, windowLow.getOrDefault(curr, 0) + 1);
+                if (windowLow.getOrDefault(curr, 0) == 1 && windowUp.getOrDefault(uppercurr, 0) > 0) {
+                    complete++;
+                }
+                //if one exists and one dont, then varity ++
+                else if (windowLow.getOrDefault(curr, 0) == 1 && windowUp.getOrDefault(uppercurr, 0) == 0) {
+                    varity++;
+                }
+                //windowLow.put(curr, windowLow.getOrDefault(curr, 0) + 1);
+
+                //out
+                while (varity > unique) {
+                    char remove = s.charAt(left);
+                    // System.out.println(remove);
+                    // System.out.println(windowUp.get(remove));
+                    if (Character.isUpperCase(remove) == true) {
+                        char lowRemove = Character.toLowerCase(remove);
+                        if (windowUp.getOrDefault(remove, 0) == 1 && (windowLow.getOrDefault(lowRemove, 0) > 0)) {
+                            complete--;
+
+                        } else if (windowUp.getOrDefault(remove, 0) == 1 && windowLow.getOrDefault(lowRemove, 0) == 0) {
+                            varity--;
+                        }
+                        windowUp.put(remove, windowUp.getOrDefault(remove, 0) - 1);
+                        if (windowUp.getOrDefault(remove, 0) == 0) {
+                            windowUp.remove(remove);
+                        }
+
+
+                    } else {
+                        char upperRemove = Character.toUpperCase(remove);
+                        if (windowLow.getOrDefault(remove, 0) == 1 && windowUp.getOrDefault(upperRemove, 0) > 0) {
+                            complete--;
+
+                        } else if (windowLow.getOrDefault(remove, 0) == 1 && windowUp.getOrDefault(upperRemove, 0) == 0) {
+                            varity--;
+                        }
+                        windowLow.put(remove, windowLow.getOrDefault(remove, 0) - 1);
+                        if (windowLow.getOrDefault(remove, 0) == 0) {
+                            windowLow.remove(remove);
+                        }
+                    }
+                    left++;
+                }
+                //calculate
+                if ((i - left + 1) > lengthAns && complete == varity) {
+                    lengthAns = i - left + 1;
+                    start = left;
+                }
+
             }
+
+
         }
-        return true;
     }
+
+
+
+    //substr = str.substring(8, 17);
+    if (lengthAns == 0) {
+        return "";
+    }
+    String substr = "";
+
+
+    substr = s.substring(start, start + lengthAns);
+    return substr;
+}
 }
