@@ -8,7 +8,7 @@ class Solution {
                 minHeap.poll();
             }
         }
-        return minHeap.peek().toString();
+        return minHeap.peek();
         
     }
 }
