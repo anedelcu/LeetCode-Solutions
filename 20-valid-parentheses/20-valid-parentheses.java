@@ -1,25 +1,30 @@
 class Solution {
     public boolean isValid(String s) {
-        // string empty -return true
-        // ([]) - true
-        // string contains only panathesis
-        // 
-        if(s.equals("")) {
-            return true;
+        Stack<Character> stack = new Stack<>();
+        for(char ch : s.toCharArray()) {
+            if(ch == '(' || ch == '[' || ch == '{') {
+                stack.push(ch);
+            }
+            else {
+                if(!stack.isEmpty()) {
+                    if(ch == ')' && stack.peek() == '(') {
+                        stack.pop();
+                    }
+                    else if(ch == ']' && stack.peek() == '[') {
+                        stack.pop();
+                    }
+                    else if(ch == '}' && stack.peek() == '{') {
+                        stack.pop();
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
         }
-        Stack<Character> stk = new Stack<>();
-	        for(char ch : s.toCharArray()){
-	            if(!stk.isEmpty() && ch == ')' && stk.peek() == '('){
-	                stk.pop();
-	            }else if(!stk.isEmpty() && ch == ']' && stk.peek() == '['){
-	                stk.pop();
-	            }else if(!stk.isEmpty() && ch == '}' && stk.peek() == '{'){
-	                stk.pop();
-	            }    
-	            else {
-	                stk.push(ch);
-	            }
-	        }
-	        return stk.size() == 0;
+        return stack.isEmpty();
     }
 }
