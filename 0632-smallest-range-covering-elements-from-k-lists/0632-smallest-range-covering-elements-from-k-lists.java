@@ -1,32 +1,37 @@
 class Solution {
+
     public int[] smallestRange(List<List<Integer>> nums) {
-        int minx = 0;
-        int miny = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-        int[] next = new int[nums.size()];
-        boolean flag = true;
-        
-        PriorityQueue <Integer> min_queue = new PriorityQueue <Integer> ((i, j) -> nums.get(i).get(next[i]) - nums.get(j).get(next[j]));
+        PriorityQueue<Node> minHeap = new PriorityQueue<Node>((n1, n2) -> nums.get(n1.listIndex).get(n1.elementIndex) - nums.get(n2.listIndex).get(n2.elementIndex));
+
+        int rangeStart = 0, rangeEnd = Integer.MAX_VALUE, currentMaxNumber = Integer.MIN_VALUE;
         for (int i = 0; i < nums.size(); i++) {
-            min_queue.offer(i);
-            max = Math.max(max, nums.get(i).get(0));
-        }
-        for (int i = 0; i < nums.size() && flag; i++) {
-            for (int j = 0; j < nums.get(i).size() && flag; j++) {
-                int min_i = min_queue.poll();
-                if (miny - minx > max - nums.get(min_i).get(next[min_i])) {
-                    minx = nums.get(min_i).get(next[min_i]);
-                    miny = max;
-                }
-                next[min_i]++;
-                if (next[min_i] == nums.get(min_i).size()) {
-                    flag = false;
-                    break;
-                }
-                min_queue.offer(min_i);
-                max = Math.max(max, nums.get(min_i).get(next[min_i]));
+            if (nums.get(i) != null) {
+                minHeap.add(new Node(0, i));
+                currentMaxNumber = Math.max(currentMaxNumber, nums.get(i).get(0));
             }
         }
-        return new int[] { minx, miny};
+        while (minHeap.size() == nums.size()) {
+            Node node = minHeap.poll();
+            if (rangeEnd - rangeStart > currentMaxNumber - nums.get(node.listIndex).get(node.elementIndex)) {
+                rangeStart = nums.get(node.listIndex).get(node.elementIndex);
+                rangeEnd = currentMaxNumber;
+            }
+            node.elementIndex++;
+            if (nums.get(node.listIndex).size() > node.elementIndex) {
+                minHeap.add(node); // insert the next element in the heap
+                currentMaxNumber = Math.max(currentMaxNumber, nums.get(node.listIndex).get(node.elementIndex));
+            }
+        }
+        return new int[] { rangeStart, rangeEnd };
+    }
+}
+
+class Node {
+    int elementIndex;
+    int listIndex;
+
+    Node(int elementIndex, int listIndex) {
+        this.elementIndex = elementIndex;
+        this.listIndex = listIndex;
     }
 }
