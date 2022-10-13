@@ -9,10 +9,6 @@ class Solution {
         
         int numberCount = 0;
         int result = 0;
-        System.out.println(minHeap.size());
-        System.out.println(matrix[minHeap.peek().rowIndex][minHeap.peek().colIndex]);
-        System.out.println(minHeap.peek().rowIndex);
-        System.out.println(minHeap.peek().colIndex);
         while(!minHeap.isEmpty()) {
             Node node = minHeap.poll();
             result = matrix[node.rowIndex][node.colIndex];
