@@ -17,10 +17,8 @@ class Solution {
                 }
             }
 
-            int len = i - j;
-            if (len > ans) {
-                ans = len;
-            }
+            
+            ans = Math.max(i - j, ans);
         }
 
         return ans;
