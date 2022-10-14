@@ -4,7 +4,6 @@ class Solution {
         String s = String.valueOf(num);
         for(int i = 0; i <= s.length() - k; i++) {
             int n = Integer.valueOf(s.substring(i, i + k));
-            System.out.println(n);
             if(n == 0) {
                 continue;
             }
