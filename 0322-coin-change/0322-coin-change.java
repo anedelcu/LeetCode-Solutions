@@ -7,7 +7,7 @@ class Solution {
         // fill the array with amount + 1
         
         Arrays.fill(dp, amount + 1);
-        
+        Arrays.sort(coins);
         // we need 0 coins to make 0 amount
         dp[0] = 0;
         
@@ -16,6 +16,9 @@ class Solution {
             for(int j = 0; j < coins.length; j++) {
                 if(coins[j] <= i) {
                     dp[i] = Math.min(dp[i], 1 + dp[i - coins[j]]);
+                }
+                else {
+                    break;
                 }
             }
         }
