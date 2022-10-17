@@ -25,7 +25,7 @@ class Solution {
             map.put(inorder[i], i);
         }
         
-        TreeNode root =  dfs(0, n -1, inorder, postorder);
+        TreeNode root =  dfs(0, n - 1, inorder, postorder);
         
         return root;
         
